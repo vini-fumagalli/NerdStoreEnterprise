@@ -1,0 +1,6 @@
+@NSE.Pagamento.Api_HostAddress = http://localhost:5215
+
+GET {{NSE.Pagamento.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\NSE.Catalogo.Api.props" />
+</Project>

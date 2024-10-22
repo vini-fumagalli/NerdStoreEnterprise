@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "5y3rhhY1SpsByEqljCw/M2s/25mBwvMsnNJUIIEusLo=",
+  "Source": "NSE.Cliente.Api",
+  "BasePath": "_content/NSE.Cliente.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
