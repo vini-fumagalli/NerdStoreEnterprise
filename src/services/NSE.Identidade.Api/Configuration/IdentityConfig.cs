@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.Api.Data;
 using NSE.Identidade.Api.Extensions;
+using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Identidade.Api.Configuration;
 
@@ -23,32 +24,7 @@ public static class IdentityConfig
             .AddErrorDescriber<IdentityMensagensPortugues>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
-        var appSettingsSection = configuration.GetSection("AppSettings");
-        service.Configure<AppSettings>(appSettingsSection);
-
-        var appSettings = appSettingsSection.Get<AppSettings>();
-        var key = Encoding.ASCII.GetBytes(appSettings.Segredo);
-
-        service.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(bearerOptions =>
-        {
-            bearerOptions.RequireHttpsMetadata = true;
-            bearerOptions.SaveToken = true;
-            bearerOptions.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ClockSkew = TimeSpan.Zero,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = appSettings.ValidoEm,
-                ValidIssuer = appSettings.Emissor
-            };
-        });
-
+        
+        service.AddJwtConfiguration(configuration);
     }
 }

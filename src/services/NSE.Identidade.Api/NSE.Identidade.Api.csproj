@@ -28,4 +28,8 @@
       <Content Remove="appsettings.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\building blocks\NSE.WebApi.Core\NSE.WebApi.Core.csproj" />
+    </ItemGroup>
+
 </Project>

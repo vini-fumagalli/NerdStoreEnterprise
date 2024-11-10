@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.Api.Data.Interfaces;
-using NSE.Identidade.Api.Data.Repositories;
 using NSE.Identidade.Api.Extensions;
 using NSE.Identidade.Api.Models;
+using NSE.WebApi.Core.Identidade;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace NSE.Identidade.Api.Controllers;
@@ -36,10 +36,18 @@ public class AuthController(
         {
             AdicionarErroProcessamento("Esse email já está sendo utilizado");
             return CustomResponse();
-        } 
-        
-        await codAutRepository.GerarCodigoEnviarEmail(usuario.Email);
-        return CustomResponse();
+        }
+
+        try
+        {
+            await codAutRepository.GerarCodigoEnviarEmail(usuario.Email);
+            return CustomResponse();
+        }
+        catch (Exception e)
+        {
+            AdicionarErroProcessamento(e.Message);
+            return CustomResponse();
+        }
     }
 
     [HttpPost("cod-aut")]
@@ -85,7 +93,7 @@ public class AuthController(
         }
 
         AdicionarErroProcessamento("Usuário ou senha incorretos");
-        return BadRequest();
+        return CustomResponse();
     }
 
     [HttpPost("refresh-token")]
@@ -121,9 +129,9 @@ public class AuthController(
         return new UsuarioRespostaLogin
         {
             Token = token,
-            RefreshToken = await GerarRefreshToken(usuario.Id),
             Email = usuario.Email,
-            ExpiraEm = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds
+            ExpiraEm = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+            RefreshToken = await GerarRefreshToken(usuario.Id)
         };
     }
     

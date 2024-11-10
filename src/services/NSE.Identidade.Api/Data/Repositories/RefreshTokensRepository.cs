@@ -24,10 +24,13 @@ public class RefreshTokensRepository(IdentidadeDbContext context) : IRefreshToke
     {
         var entity = await Encontrar(usuarioId);
 
-        return entity is not null &&
-               entity.RefreshToken == refreshToken &&
-               entity.ValidoAte >= DateTime.Now;
+        return RefreshTokenValido(entity, refreshToken);
     }
+    
+    private static bool RefreshTokenValido(RefreshTokens entity, string refreshToken)
+        => entity is not null &&
+           entity.RefreshToken == refreshToken &&
+           entity.ValidoAte >= DateTime.Now;
 
     private async Task<RefreshTokens> Encontrar(string usuarioId)
     {
