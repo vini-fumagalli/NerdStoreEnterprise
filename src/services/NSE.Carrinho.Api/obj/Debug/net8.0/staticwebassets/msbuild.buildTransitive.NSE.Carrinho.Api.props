@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\NSE.Carrinho.Api.props" />
-</Project>
