@@ -1,0 +1,15 @@
+# Rider settings
+.idea/
+.idea/workspace.xml
+.idea/.idea.*
+.idea/modules.xml
+
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
