@@ -7,6 +7,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Configuration.AddEnviromentConfiguration(builder.Environment);
 builder.Services.AddIdentityConfiguration(builder.Configuration);
+builder.Services.AddRepositoriesConfiguration();
+builder.Services.AddServicesConfiguration();
 
 var app = builder.Build();
 
