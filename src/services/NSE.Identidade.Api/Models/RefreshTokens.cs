@@ -4,13 +4,13 @@ namespace NSE.Identidade.Api.Models;
 
 public class RefreshTokens
 {
-    [Key] public string UsuarioId { get; private set; } 
+    [Key] public int UsuarioId { get; private set; } 
     public string RefreshToken { get; private set; }
     public DateTime ValidoAte { get; set; }
     
     private RefreshTokens() { }
 
-    public RefreshTokens(string usuarioId, string refreshToken)
+    public RefreshTokens(int usuarioId, string refreshToken)
     {
         UsuarioId = usuarioId;
         RefreshToken = refreshToken;

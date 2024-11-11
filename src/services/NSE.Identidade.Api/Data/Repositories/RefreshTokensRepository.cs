@@ -20,7 +20,7 @@ public class RefreshTokensRepository(IdentidadeDbContext context) : IRefreshToke
         await context.SaveChangesAsync();
     }
 
-    public async Task<bool> Validar(string usuarioId, string refreshToken)
+    public async Task<bool> Validar(int usuarioId, string refreshToken)
     {
         var entity = await Encontrar(usuarioId);
 
@@ -32,7 +32,7 @@ public class RefreshTokensRepository(IdentidadeDbContext context) : IRefreshToke
            entity.RefreshToken == refreshToken &&
            entity.ValidoAte >= DateTime.Now;
 
-    private async Task<RefreshTokens> Encontrar(string usuarioId)
+    private async Task<RefreshTokens> Encontrar(int usuarioId)
     {
         return await context.RefreshTokens.FindAsync(usuarioId);
     }

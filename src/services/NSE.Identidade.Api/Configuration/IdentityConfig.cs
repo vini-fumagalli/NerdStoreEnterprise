@@ -1,8 +1,5 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.Api.Data;
 using NSE.Identidade.Api.Extensions;
 using NSE.WebApi.Core.Identidade;
@@ -19,8 +16,8 @@ public static class IdentityConfig
         service.AddDbContext<ApplicationDbContext>(options => 
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         
-        service.AddDefaultIdentity<IdentityUser>()
-            .AddRoles<IdentityRole>()
+        service.AddDefaultIdentity<IdentityUser<int>>()
+            .AddRoles<IdentityRole<int>>()
             .AddErrorDescriber<IdentityMensagensPortugues>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

@@ -17,8 +17,8 @@ namespace NSE.Identidade.Api.Controllers;
 [ApiController]
 [Route("api/identidade")]
 public class AuthController(
-    SignInManager<IdentityUser> signInManager,
-    UserManager<IdentityUser> userManager, 
+    SignInManager<IdentityUser<int>> signInManager,
+    UserManager<IdentityUser<int>> userManager, 
     IOptions<AppSettings> appSettings, 
     ICodAutRepository codAutRepository,
     IRefreshTokensRepository refreshTokensRepository) : MainController
@@ -59,7 +59,7 @@ public class AuthController(
             return CustomResponse();
         }
         
-        var user = new IdentityUser
+        var user = new IdentityUser<int>
         {
             UserName = codAutEntry.Email,
             Email = codAutEntry.Email,
@@ -109,7 +109,7 @@ public class AuthController(
         }
         
         var usuarioId = principal.Claims.First(c => c.Type.EndsWith("nameidentifier")).Value;
-        if (!await refreshTokensRepository.Validar(usuarioId, tokenEntry.RefreshToken))
+        if (!await refreshTokensRepository.Validar(int.Parse(usuarioId), tokenEntry.RefreshToken))
         {
             AdicionarErroProcessamento("Token/refresh token inválido");
             return CustomResponse();
@@ -161,7 +161,7 @@ public class AuthController(
         return principal;
     }
 
-    private async Task<string> GerarRefreshToken(string usuarioId)
+    private async Task<string> GerarRefreshToken(int usuarioId)
     {
         var randomNumber = new byte[32];
         var rng = RandomNumberGenerator.Create();
@@ -188,9 +188,9 @@ public class AuthController(
         return tokenHandler.WriteToken(token);
     }
 
-    private void AdicionarClaims(IdentityUser usuario, IList<Claim> claims)
+    private void AdicionarClaims(IdentityUser<int> usuario, IList<Claim> claims)
     {
-        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, usuario.Id));
+        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()));
         claims.Add(new Claim(JwtRegisteredClaimNames.Email, usuario.Email));
         claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
         claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));

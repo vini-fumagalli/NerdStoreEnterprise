@@ -5,5 +5,5 @@ namespace NSE.Identidade.Api.Data.Interfaces;
 public interface IRefreshTokensRepository
 {
     Task CreateOrUpdate(RefreshTokens refreshTokens);
-    Task<bool> Validar(string usuarioId, string refreshToken);
+    Task<bool> Validar(int usuarioId, string refreshToken);
 }
