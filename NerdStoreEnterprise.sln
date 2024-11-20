@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Catalogo.Api", "src\ser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cliente", "Cliente", "{BE9B40AE-3756-421E-86EA-AE4CBFA8FB18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Cliente.Api", "src\services\NSE.Cliente.Api\NSE.Cliente.Api.csproj", "{9772DC67-88F3-42CF-B50C-B6D1AEAC0034}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Clientes.Api", "src\services\NSE.Clientes.Api\NSE.Clientes.Api.csproj", "{9772DC67-88F3-42CF-B50C-B6D1AEAC0034}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pagamento", "Pagamento", "{4ECAB31F-8A64-430A-9FE5-23A1D87C4462}"
 EndProject
