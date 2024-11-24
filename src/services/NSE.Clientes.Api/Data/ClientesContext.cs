@@ -1,14 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using NSE.Clientes.Api.Models;
 using NSE.Core.Data;
+using NSE.Core.DomainObjects;
+using NSE.Core.Mediator;
 
 namespace NSE.Clientes.Api.Data;
 
 public class ClientesContext : DbContext, IUnitOfWork
 {
-    public ClientesContext(DbContextOptions<ClientesContext> options)
+    private readonly IMediatorHandler _mediatorHandler;
+    public ClientesContext(DbContextOptions<ClientesContext> options, IMediatorHandler mediatorHandler)
         : base(options)
     {
+        _mediatorHandler = mediatorHandler; 
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         ChangeTracker.AutoDetectChangesEnabled = false;
     }
@@ -42,6 +46,34 @@ public class ClientesContext : DbContext, IUnitOfWork
 
     public async Task<bool> Commit()
     {
-        return await base.SaveChangesAsync() > 0;
+        var sucesso = await base.SaveChangesAsync() > 0;
+
+        if (sucesso) await _mediatorHandler.PublicarEventos(this);
+
+        return sucesso;
+    }
+}
+
+public static class MediatorExtension
+{
+    public static async Task PublicarEventos<T>(this IMediatorHandler mediatorHandler, T context) where T : DbContext
+    {
+        var domainEntities = context.ChangeTracker
+            .Entries<Entity>()
+            .Where(x => x.Entity.Notificacoes != null && x.Entity.Notificacoes.Any());
+
+        var domainEvents = domainEntities
+            .SelectMany(x => x.Entity.Notificacoes)
+            .ToList();
+        
+        domainEntities.ToList().ForEach(de => de.Entity.LimparEventos());
+
+        var tasks = domainEvents
+            .Select(async domainEvent =>
+            {
+                await mediatorHandler.PublicarEvento(domainEvent);
+            });
+
+        await Task.WhenAll(tasks);
     }
 }

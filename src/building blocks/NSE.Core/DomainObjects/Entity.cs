@@ -1,10 +1,29 @@
-using System.Text.Json.Serialization;
+using NSE.Core.Messages;
 
 namespace NSE.Core.DomainObjects;
 
 public abstract class Entity
 {
     public int Id { get; protected set; }
+
+    private List<Event> _notificacoes;
+    public IReadOnlyCollection<Event> Notificacoes => _notificacoes;
+
+    public void AdicionarEvento(Event evento)
+    {
+        _notificacoes = _notificacoes is not null ? _notificacoes : new List<Event>();
+        _notificacoes.Add(evento);
+    }
+
+    public void RemoverEvento(Event evento)
+    {
+        _notificacoes?.Remove(evento);
+    }
+
+    public void LimparEventos()
+    {
+        _notificacoes?.Clear();
+    }
     
     public override bool Equals(object obj)
     {
