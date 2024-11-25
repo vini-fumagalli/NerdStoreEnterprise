@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.Api.Data.Interfaces;
-using NSE.Identidade.Api.Extensions;
 using NSE.Identidade.Api.Models;
+using NSE.WebApi.Core.Controller;
 using NSE.WebApi.Core.Identidade;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace NSE.Identidade.Api.Controllers;
 
-[ApiController]
 [Route("api/identidade")]
 public class AuthController(
     SignInManager<IdentityUser<int>> signInManager,

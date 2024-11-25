@@ -1,6 +1,8 @@
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NSE.Catalogo.Api.Models;
 using NSE.Core.Data;
+using NSE.Core.Messages;
 
 namespace NSE.Catalogo.Api.Data;
 
@@ -12,8 +14,15 @@ public class CatalogoContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        IgnorarPropriedades(modelBuilder);
         TravarVarcharMax(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
+    }
+    
+    private static void IgnorarPropriedades(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Ignore<Event>();
+        modelBuilder.Ignore<ValidationResult>();
     }
 
     private static void TravarVarcharMax(ModelBuilder modelBuilder)

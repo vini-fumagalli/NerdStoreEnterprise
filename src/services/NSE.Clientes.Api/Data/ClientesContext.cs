@@ -1,8 +1,10 @@
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NSE.Clientes.Api.Models;
 using NSE.Core.Data;
 using NSE.Core.DomainObjects;
 using NSE.Core.Mediator;
+using NSE.Core.Messages;
 
 namespace NSE.Clientes.Api.Data;
 
@@ -22,9 +24,16 @@ public class ClientesContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        IgnorarPropriedades(modelBuilder);
         TravarVarcharMax(modelBuilder);
         TravarDeleteEmCascata(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ClientesContext).Assembly);
+    }
+
+    private static void IgnorarPropriedades(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Ignore<Event>();
+        modelBuilder.Ignore<ValidationResult>();
     }
 
     private static void TravarDeleteEmCascata(ModelBuilder modelBuilder)

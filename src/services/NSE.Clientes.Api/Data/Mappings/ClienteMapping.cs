@@ -11,6 +11,9 @@ public class ClienteMapping : IEntityTypeConfiguration<Cliente>
     {
         builder.HasKey(c => c.Id);
 
+        // builder.Property(c => c.Id)
+        //     .ValueGeneratedNever();
+
         builder.Property(c => c.Nome)
             .IsRequired()
             .HasColumnType("varchar(200)");

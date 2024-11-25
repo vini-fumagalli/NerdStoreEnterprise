@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSE.Catalogo.Api.Models;
+using NSE.WebApi.Core.Controller;
 using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Catalogo.Api.Controllers;
 
 [Route("api/catalogo")]
-[ApiController]
 [Authorize]
-public class CatalogoController(IProdutoRepository repository) : ControllerBase
+public class CatalogoController(IProdutoRepository repository) : MainController
 {
     [AllowAnonymous]
     [HttpGet("produtos")]
