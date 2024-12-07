@@ -26,12 +26,12 @@ public class AuthController(
     private readonly AppSettings _appSettings = appSettings.Value;
     
     [HttpPost("nova-conta")]
-    public async Task<ActionResult> Registrar(UsuarioRegistro usuario)
+    public async Task<ActionResult> Registrar([FromBody] UsuarioRegistro usuario)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
         
         var user = await userManager.FindByEmailAsync(usuario.Email);
-        if (user is not null)
+        if (user is not null) 
         {
             AdicionarErroProcessamento("Esse email já está sendo utilizado");
             return CustomResponse();
@@ -50,7 +50,7 @@ public class AuthController(
     }
 
     [HttpPost("cod-aut")]
-    public async Task<ActionResult> CodAut(CodAutEntry codAutEntry)
+    public async Task<ActionResult> CodAut([FromBody] CodAutEntry codAutEntry)
     {
         if (!await codAutRepository.Validar(codAutEntry.Email, codAutEntry.CodigoAutenticacao))
         {
@@ -77,11 +77,11 @@ public class AuthController(
     }
 
     [HttpPost("autenticar")]
-    public async Task<ActionResult> Login(UsuarioLogin usuario)
+    public async Task<ActionResult> Login([FromBody] UsuarioLogin usuario)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        var result = await signInManager.PasswordSignInAsync(usuario.Email, usuario.Senha, false, false);
+        var result = await signInManager.PasswordSignInAsync(usuario.Email, usuario.Senha, false, true);
 
         if (result.Succeeded) return CustomResponse(await GerarJwt(usuario.Email));
 
@@ -96,7 +96,7 @@ public class AuthController(
     }
 
     [HttpPost("refresh-token")]
-    public async Task<ActionResult> RenovarToken(TokenEntry tokenEntry)
+    public async Task<ActionResult> RenovarToken([FromBody] TokenEntry tokenEntry)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
         
