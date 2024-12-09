@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NSE.Core.Messages.Integration;
 using NSE.Identidade.Api.Data.Interfaces;
 using NSE.Identidade.Api.Models;
+using NSE.MessageBus;
 using NSE.WebApi.Core.Controller;
 using NSE.WebApi.Core.Identidade;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -20,7 +22,8 @@ public class AuthController(
     UserManager<IdentityUser<int>> userManager, 
     IOptions<AppSettings> appSettings, 
     ICodAutRepository codAutRepository,
-    IRefreshTokensRepository refreshTokensRepository) : MainController
+    IRefreshTokensRepository refreshTokensRepository,
+    IMessageBus bus) : MainController
 {
 
     private readonly AppSettings _appSettings = appSettings.Value;
@@ -66,14 +69,22 @@ public class AuthController(
         };
         
         var result = await userManager.CreateAsync(user, codAutEntry.Senha);
-        if (result.Succeeded)
+        if (!result.Succeeded)
         {
-            await signInManager.SignInAsync(user, false);
-            return CustomResponse(await GerarJwt(user.Email));
+            result.Errors.ToList().ForEach(e => AdicionarErroProcessamento(e.Description));
+            return CustomResponse();
         }
         
-        AdicionarErroProcessamento("Erro ao realizar cadastro de usuário");
-        return CustomResponse();
+        var clienteResult = await RegistrarCliente(codAutEntry);
+
+        if (!clienteResult.ValidationResult.IsValid)
+        {
+            await userManager.DeleteAsync(user);
+            return CustomResponse(clienteResult.ValidationResult);
+        }
+            
+        await signInManager.SignInAsync(user, false);
+        return CustomResponse(await GerarJwt(user.Email));
     }
 
     [HttpPost("autenticar")]
@@ -200,5 +211,23 @@ public class AuthController(
     {
         return (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
             .TotalSeconds);
+    }
+    
+    private async Task<ResponseMessage> RegistrarCliente(CodAutEntry usuarioRegistro)
+    {
+        var usuario = await userManager.FindByEmailAsync(usuarioRegistro.Email);
+
+        var usuarioRegistrado = new UsuarioRegistradoIntegrationEvent(usuario.Id, usuarioRegistro.Nome,
+            usuarioRegistro.Email, usuarioRegistro.Cpf);
+
+        try
+        {
+            return await bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistrado);
+        }
+        catch
+        {
+            await userManager.DeleteAsync(usuario);
+            throw;
+        }
     }
 }

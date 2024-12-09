@@ -9,6 +9,7 @@ builder.Configuration.AddEnviromentConfiguration(builder.Environment);
 builder.Services.AddIdentityConfiguration(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration();
 builder.Services.AddServicesConfiguration();
+builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
