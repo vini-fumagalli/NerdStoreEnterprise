@@ -24,10 +24,7 @@ namespace NSE.Clientes.Api.Migrations
             modelBuilder.Entity("NSE.Clientes.Api.Models.Cliente", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Excluido")
                         .HasColumnType("bit");

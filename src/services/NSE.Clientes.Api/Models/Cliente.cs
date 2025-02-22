@@ -13,8 +13,9 @@ public class Cliente : Entity, IAggregateRoot
     
     protected Cliente() { }
 
-    public Cliente(string nome, string email, string cpf)
+    public Cliente(int id, string nome, string email, string cpf)
     {
+        Id = id;
         Nome = nome;
         Email = new Email(email);
         Cpf = new Cpf(cpf);

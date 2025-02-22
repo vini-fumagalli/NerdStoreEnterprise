@@ -4,21 +4,13 @@ using NSE.Core.Messages;
 
 namespace NSE.Clientes.Api.Application.Commands;
 
-public class RegistrarClienteCommand : Command
+public class RegistrarClienteCommand(int id, string nome, string email, string cpf)
+    : Command
 {
-    // public int Id { get; private set; }
-    public string Nome { get; private set; }
-    public string Email { get; private set; }
-    public string Cpf { get; private set; }
-
-    public RegistrarClienteCommand(string nome, string email, string cpf)
-    {
-        // AggregateId = id;
-        // Id = id;
-        Nome = nome;
-        Email = email;
-        Cpf = cpf;
-    }
+    public int Id { get; private set; } = id;
+    public string Nome { get; private set; } = nome;
+    public string Email { get; private set; } = email;
+    public string Cpf { get; private set; } = cpf;
 
     public override bool EhValido()
     {

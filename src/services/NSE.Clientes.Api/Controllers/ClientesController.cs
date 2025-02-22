@@ -8,12 +8,12 @@ namespace NSE.Clientes.Api.Controllers;
 [Route("api/[controller]")]
 public class ClientesController(IMediatorHandler mediatorHandler) : MainController
 {
-    [HttpGet]
-    public async Task<IActionResult> Get()
-    {
-        var resultado = await mediatorHandler.EnviarComando(
-            new RegistrarClienteCommand("Fumas", "vinifumagalli_@hotmail.com", "43460459875"));
-        
-        return CustomResponse(resultado);
-    }
+    // [HttpGet]
+    // public async Task<IActionResult> Get()
+    // {
+    //     var resultado = await mediatorHandler.EnviarComando(
+    //         new RegistrarClienteCommand(1, "Fumas", "vinifumagalli_@hotmail.com", "43460459875"));
+    //     
+    //     return CustomResponse(resultado);
+    // }
 }

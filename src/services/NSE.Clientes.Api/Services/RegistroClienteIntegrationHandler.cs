@@ -12,13 +12,22 @@ public class RegistroClienteIntegrationHandler(
 {
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        bus.RespondAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(RegistrarCliente);
+        SetResponder();
         return Task.CompletedTask;
     }
     
+    private void SetResponder()
+    {
+        bus.RespondAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(RegistrarCliente);
+        bus.AdvancedBus.Connected += OnConnect;
+    }
+
+    private void OnConnect(object s, EventArgs e) => SetResponder();
+    
+    
     private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistradoIntegrationEvent message)
     {
-        var clienteCommand = new RegistrarClienteCommand(message.Nome, message.Email, message.Cpf);
+        var clienteCommand = new RegistrarClienteCommand(message.Id, message.Nome, message.Email, message.Cpf);
         ValidationResult sucesso;
 
         using (var scope = serviceProvider.CreateScope())

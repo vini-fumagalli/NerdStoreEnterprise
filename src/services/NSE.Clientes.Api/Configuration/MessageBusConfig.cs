@@ -9,7 +9,8 @@ public static class MessageBusConfig
     public static void AddMessageBusConfiguration(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
-        serviceCollection.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"))
+        serviceCollection
+            .AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"))
             .AddHostedService<RegistroClienteIntegrationHandler>();
     }
 }

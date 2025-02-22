@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>NSE.Cliente.Api</RootNamespace>
+        <RootNamespace>NSE.Clientes.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <Folder Include="Application\Queries\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
     <ItemGroup>

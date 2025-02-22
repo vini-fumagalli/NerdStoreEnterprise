@@ -11,8 +11,8 @@ using NSE.Clientes.Api.Data;
 namespace NSE.Clientes.Api.Migrations
 {
     [DbContext(typeof(ClientesContext))]
-    [Migration("20241125015606_Clientes")]
-    partial class Clientes
+    [Migration("20250222172348_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,10 +27,7 @@ namespace NSE.Clientes.Api.Migrations
             modelBuilder.Entity("NSE.Clientes.Api.Models.Cliente", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Excluido")
                         .HasColumnType("bit");
