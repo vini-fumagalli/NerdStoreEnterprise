@@ -8,7 +8,7 @@ namespace NSE.Catalogo.Api.Controllers;
 
 [Route("api/catalogo")]
 [Authorize]
-public class CatalogoController(IProdutoRepository repository) : MainController
+public class CatalogosController(IProdutoRepository repository) : MainController
 {
     [AllowAnonymous]
     [HttpGet("produtos")]
