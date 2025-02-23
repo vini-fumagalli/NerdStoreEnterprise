@@ -32,18 +32,9 @@ public class MainController : ControllerBase
         return CustomResponse();
     }
     
-    protected bool OperacaoValida()
-    {
-        return !Erros.Any();
-    }
+    protected bool OperacaoValida() => !Erros.Any();
 
-    protected void AdicionarErroProcessamento(string erro)
-    {
-        Erros.Add(erro);
-    }
+    protected void AdicionarErroProcessamento(string erro) => Erros.Add(erro);
 
-    protected void LimparErrosProcessamento()
-    {
-        Erros.Clear();
-    }
+    protected void LimparErrosProcessamento() => Erros.Clear();
 }

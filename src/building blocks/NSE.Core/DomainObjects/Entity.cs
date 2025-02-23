@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NSE.Core.Messages;
 
 namespace NSE.Core.DomainObjects;
@@ -6,8 +7,8 @@ public abstract class Entity
 {
     public int Id { get; protected set; }
 
-    private List<Event> _notificacoes;
-    public IReadOnlyCollection<Event> Notificacoes => _notificacoes;
+    [JsonIgnore] private List<Event> _notificacoes;
+    [JsonIgnore] public IReadOnlyCollection<Event> Notificacoes => _notificacoes;
 
     public void AdicionarEvento(Event evento)
     {
