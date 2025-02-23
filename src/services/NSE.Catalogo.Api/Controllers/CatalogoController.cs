@@ -17,7 +17,7 @@ public class CatalogoController(IProdutoRepository repository) : MainController
         return await repository.ObterTodos();
     }
     
-    [ClaimsAuthorize(Acesso.Catalogo, [Permissao.Ler])]
+    [ClaimsAuthorize(Acesso.Catalogo, Permissao.Ler)]
     [HttpGet("produtos/{id:int}")]
     public async Task<Produto> GetById(int id)
     {

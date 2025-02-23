@@ -14,7 +14,7 @@ public class CustomAuthorization
 
 public class ClaimsAuthorizeAttribute : TypeFilterAttribute
 {
-    public ClaimsAuthorizeAttribute(Acesso acesso, Permissao[] permissao) : base(typeof(RequisitoClaimFilter))
+    public ClaimsAuthorizeAttribute(Acesso acesso, params Permissao[] permissao) : base(typeof(RequisitoClaimFilter))
     {
         Arguments = new object[] { new Claim(acesso.ToString(), string.Join(',', permissao)) };
     }
