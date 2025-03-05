@@ -8,4 +8,6 @@ public interface IClienteRepository : IRepository<Cliente>
     Task Adicionar(Cliente cliente);
     Task<IEnumerable<Cliente>> ObterTodos();
     Task<Cliente> ObterPorCpf(string cpf);
+    void AdicionarEndereco(Endereco endereco);
+    Task<Endereco> ObterEnderecoPorClienteId(int clienteId);
 }

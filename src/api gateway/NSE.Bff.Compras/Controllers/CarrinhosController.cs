@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NSE.Bff.Compras.Models;
+using NSE.Bff.Compras.Services;
 using NSE.Bff.Compras.Services.Interfaces;
 using NSE.WebApi.Core.Controller;
 using Polly.Caching;
@@ -9,7 +10,8 @@ namespace NSE.Bff.Compras.Controllers;
 [Route("api/compras/[controller]")]
 public class CarrinhosController(
     ICatalogoService catalogoService,
-    ICarrinhoService carrinhoService
+    ICarrinhoService carrinhoService,
+    IPedidoService pedidoService
     ) : MainController
 {
     [HttpGet]
@@ -59,8 +61,19 @@ public class CarrinhosController(
         AdicionarErroProcessamento("Produto inexistente!");
         return CustomResponse();
     }
-    
-    //TODO: ENDPOINT PARA APLICAR VOUCHER
+
+    [HttpPost("aplicar-voucher")]
+    public async Task<IActionResult> AplicarVoucher([FromBody] string voucherCodigo)
+    {
+        var voucher = await pedidoService.ObterVoucherPorCodigo(voucherCodigo);
+        if (voucher == null)
+        {
+            AdicionarErroProcessamento("Voucher inválido ou não encontrado!");
+            return CustomResponse();
+        }
+
+        return CustomResponse(await carrinhoService.AplicarVoucherCarrinho(voucher));
+    }
     
     private async Task ValidarItemCarrinho(ItemProdutoDTO produto, int quantidade, bool adicionarProduto = false)
     {

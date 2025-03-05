@@ -17,7 +17,7 @@ public class CatalogoService : Service, ICatalogoService
     
     public async Task<ItemProdutoDTO> ObterPorId(int id)
     {
-        var response = await _httpClient.GetAsync($"/catalogos/produtos/{id}");
+        var response = await _httpClient.GetAsync($"catalogos/produtos/{id}");
 
         TratarErrosResponse(response);
 
@@ -27,7 +27,7 @@ public class CatalogoService : Service, ICatalogoService
     public async Task<IEnumerable<ItemProdutoDTO>> ObterItens(IEnumerable<int> ids)
     {
         var idsRequest = string.Join(",", ids);
-        var response = await _httpClient.GetAsync($"/catalogos/produtos/lista/{idsRequest}");
+        var response = await _httpClient.GetAsync($"catalogos/produtos/lista/{idsRequest}");
 
         TratarErrosResponse(response);
 

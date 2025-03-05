@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\building blocks\NSE.Core\NSE.Core.csproj" />
+      <ProjectReference Include="..\..\building blocks\NSE.MessageBus\NSE.MessageBus.csproj" />
+      <ProjectReference Include="..\..\building blocks\NSE.WebApi.Core\NSE.WebApi.Core.csproj" />
+      <ProjectReference Include="..\NSE.Pedidos.Domain\NSE.Pedidos.Domain\NSE.Pedidos.Domain.csproj" />
+      <ProjectReference Include="..\NSE.Pedidos.Infra\NSE.Pedidos.Infra\NSE.Pedidos.Infra.csproj" />
+    </ItemGroup>
+
+</Project>

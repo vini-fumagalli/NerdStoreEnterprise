@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NSE.Carrinho.Api.Data;
 using NSE.Carrinho.Api.Models;
 using NSE.Core.Data;
+using NSE.Core.Messages;
 using NSE.WebApi.Core.Controller;
 using NSE.WebApi.Core.Usuario;
 
@@ -71,6 +72,17 @@ public class CarrinhosController(IAspNetUser user, CarrinhoContext context) : Ma
         return CustomResponse();
     }
 
+    [HttpPost("aplicar-voucher")]
+    public async Task<IActionResult> AplicarVoucher([FromBody] Voucher voucher)
+    {
+        var carrinho = await ObterCarrinhoCliente();
+        carrinho?.AplicarVoucher(voucher);
+
+        context.CarrinhoCliente.Update(carrinho);
+        await Commit();
+        return CustomResponse();
+    }
+    
     private async Task<CarrinhoCliente?> ObterCarrinhoCliente()
     {
         return await context.CarrinhoCliente

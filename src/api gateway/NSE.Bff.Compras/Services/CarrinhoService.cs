@@ -18,7 +18,7 @@ public class CarrinhoService : Service, ICarrinhoService
 
     public async Task<CarrinhoDTO> ObterCarrinho()
     {
-        var response = await _httpClient.GetAsync("/carrinhos");
+        var response = await _httpClient.GetAsync("carrinhos");
 
         TratarErrosResponse(response);
 
@@ -27,7 +27,7 @@ public class CarrinhoService : Service, ICarrinhoService
 
     public async Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoDTO produto)
     {
-        var response = await _httpClient.PostAsync("/carrinhos/", ObterConteudo(produto));
+        var response = await _httpClient.PostAsync("carrinhos", ObterConteudo(produto));
 
         if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 
@@ -36,7 +36,7 @@ public class CarrinhoService : Service, ICarrinhoService
 
     public async Task<ResponseResult> AtualizarItemCarrinho(int produtoId, ItemCarrinhoDTO carrinho)
     {
-        var response = await _httpClient.PutAsync($"/carrinhos/{produtoId}", ObterConteudo(carrinho));
+        var response = await _httpClient.PutAsync($"carrinhos/{produtoId}", ObterConteudo(carrinho));
         
         if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 
@@ -45,15 +45,19 @@ public class CarrinhoService : Service, ICarrinhoService
 
     public async Task<ResponseResult> RemoverItemCarrinho(int produtoId)
     {
-        var response = await _httpClient.DeleteAsync($"/carrinhos/{produtoId}");
+        var response = await _httpClient.DeleteAsync($"carrinhos/{produtoId}");
         
         if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 
         return Ok();
     }
 
-    public Task<ResponseResult> AplicarVoucherCarrinho(VoucherDTO voucher)
+    public async Task<ResponseResult> AplicarVoucherCarrinho(VoucherDTO voucher)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PostAsync("carrinhos/aplicar-voucher", ObterConteudo(voucher));
+
+        if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
+
+        return Ok();
     }
 }
