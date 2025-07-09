@@ -5,16 +5,14 @@ namespace NSE.Pedidos.Api.Application.DTO;
 public class PedidoDTO
 {
     public int Id { get; set; }
+    public int ClienteId { get; set; }
     public int Codigo { get; set; }
-
     public int Status { get; set; }
     public DateTime Data { get; set; }
     public decimal ValorTotal { get; set; }
-
     public decimal Desconto { get; set; }
     public string VoucherCodigo { get; set; }
     public bool VoucherUtilizado { get; set; }
-
     public List<PedidoItemDTO> PedidoItems { get; set; }
     public EnderecoDTO Endereco { get; set; }
     
@@ -23,6 +21,7 @@ public class PedidoDTO
         var pedidoDTO = new PedidoDTO
         {
             Id = pedido.Id,
+            ClienteId = pedido.ClienteId,
             Codigo = pedido.Codigo,
             Status = (int)pedido.PedidoStatus,
             Data = pedido.DataCadastro,

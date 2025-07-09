@@ -55,6 +55,15 @@ public class PedidoRepository(PedidosContext context) : IPedidoRepository
             .FirstOrDefaultAsync();
     }
 
+    public async Task<Pedido> ObterPedidosAutorizados()
+    {
+        return await context.Pedidos
+            .Where(p => p.PedidoStatus == PedidoStatus.Autorizado)
+            .Include(p => p.PedidoItems)
+            .OrderBy(p => p.DataCadastro)
+            .FirstOrDefaultAsync();
+    }
+
     public void Dispose()
     {
         context?.Dispose();

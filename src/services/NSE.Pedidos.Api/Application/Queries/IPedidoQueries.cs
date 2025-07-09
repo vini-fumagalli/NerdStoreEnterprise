@@ -6,4 +6,5 @@ public interface IPedidoQueries
 {
     Task<PedidoDTO> ObterUltimoPedido(int clienteId);
     Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId(int clienteId);
+    Task<PedidoDTO> ObterPedidosAutorizados();
 }

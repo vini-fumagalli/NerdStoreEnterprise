@@ -7,6 +7,7 @@ using NSE.MessageBus;
 using NSE.Pedidos.Api.Application.Commands;
 using NSE.Pedidos.Api.Application.Events;
 using NSE.Pedidos.Api.Application.Queries;
+using NSE.Pedidos.Api.Services;
 using NSE.Pedidos.Domain.Pedidos;
 using NSE.Pedidos.Domain.Vouchers;
 using NSE.Pedidos.Infra.Data;
@@ -35,7 +36,8 @@ public static class DependencyInjectionConfig
             options.AddPolicy("Total", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         });
 
-        services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"));
+        services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"))
+            .AddHostedService<PedidoOrquestradorIntegrationHandler>();
 
         services.AddHttpContextAccessor();
         services.AddScoped<IAspNetUser, AspNetUser>();

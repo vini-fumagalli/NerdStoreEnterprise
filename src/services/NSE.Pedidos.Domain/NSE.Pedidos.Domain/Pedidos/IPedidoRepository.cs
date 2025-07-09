@@ -11,4 +11,5 @@ public interface IPedidoRepository : IRepository<Pedido>
     Task<PedidoItem> ObterItemPorId(int id);
     Task<PedidoItem> ObterItemPorPedido(int pedidoId, int produtoId);
     Task<Pedido> ObterUltimoPedido(int clienteId);
+    Task<Pedido> ObterPedidosAutorizados();
 }

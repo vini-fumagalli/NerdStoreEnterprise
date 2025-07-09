@@ -1,6 +1,8 @@
 using FluentValidation.Results;
 using MediatR;
 using NSE.Core.Messages;
+using NSE.Core.Messages.Integration;
+using NSE.MessageBus;
 using NSE.Pedidos.Api.Application.DTO;
 using NSE.Pedidos.Api.Application.Events;
 using NSE.Pedidos.Domain.Pedidos;
@@ -11,7 +13,8 @@ namespace NSE.Pedidos.Api.Application.Commands;
 
 public class PedidoCommandHandler(
     IPedidoRepository pedidoRepository,
-    IVoucherRepository voucherRepository
+    IVoucherRepository voucherRepository,
+    IMessageBus bus
     ) : CommandHandler, IRequestHandler<AdicionarPedidoCommand, ValidationResult>
 {
     public async Task<ValidationResult> Handle(AdicionarPedidoCommand message, CancellationToken cancellationToken)
@@ -24,7 +27,7 @@ public class PedidoCommandHandler(
         
         if (!ValidarPedido(pedido)) return ValidationResult;
         
-        if (!ProcessarPagamento(pedido)) return ValidationResult;
+        if (!await ProcessarPagamento(pedido, message)) return ValidationResult;
         
         pedido.AutorizarPedido();
         pedido.AdicionarEvento(new PedidoRealizadoEvent(pedido.Id, pedido.ClienteId));
@@ -101,8 +104,29 @@ public class PedidoCommandHandler(
         return true;
     }
 
-    public bool ProcessarPagamento(Pedido pedido)
+    public async Task<bool> ProcessarPagamento(Pedido pedido, AdicionarPedidoCommand message)
     {
-        return true;
+        var pedidoIniciado = new PedidoIniciadoIntegrationEvent
+        {
+            PedidoId = pedido.Id,
+            ClienteId = pedido.ClienteId,
+            Valor = pedido.ValorTotal,
+            TipoPagamento = 1,
+            NomeCartao = message.NomeCartao,
+            NumeroCartao = message.NumeroCartao,
+            MesAnoVencimento = message.ExpiracaoCartao,
+            CVV = message.CvvCartao
+        };
+
+        var result = await bus.RequestAsync<PedidoIniciadoIntegrationEvent, ResponseMessage>(pedidoIniciado);
+
+        if (result.ValidationResult.IsValid) return true;
+
+        foreach (var erro in result.ValidationResult.Errors)
+        {
+            AdicionarErro(erro.ErrorMessage);
+        }
+        
+        return false;
     }
 }
