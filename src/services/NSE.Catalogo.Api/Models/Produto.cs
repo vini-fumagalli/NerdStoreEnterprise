@@ -13,4 +13,17 @@ public class Produto : Entity, IAggregateRoot
     public int QuantidadeEstoque { get; private set; }
     
     private Produto() { }
+    
+    public void RetirarEstoque(int quantidade)
+    {
+        if (QuantidadeEstoque >= quantidade)
+        {
+            QuantidadeEstoque -= quantidade;
+        }
+    }
+
+    public bool EstaDisponivel(int quantidade)
+    {
+        return Ativo && QuantidadeEstoque >= quantidade;
+    }
 }

@@ -29,6 +29,13 @@ public class ProdutoRepository(CatalogoContext context) : IProdutoRepository
         context.Produtos.Update(produto);
     }
 
+    public async Task<List<Produto>> ObterProdutosPorId(IEnumerable<int> idCollection)
+    {
+        return await context.Produtos
+            .Where(p => idCollection.Contains(p.Id) && p.Ativo)
+            .ToListAsync();
+    }
+
     public void Dispose()
     {
         context?.Dispose();

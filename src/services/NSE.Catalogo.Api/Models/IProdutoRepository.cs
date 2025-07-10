@@ -9,4 +9,5 @@ public interface IProdutoRepository : IRepository<Produto>
     Task<Produto> ObterPorId(int id);
     Task Adicionar(Produto produto);
     void Atualizar(Produto produto);
+    Task<List<Produto>> ObterProdutosPorId(IEnumerable<int> idCollection);
 }

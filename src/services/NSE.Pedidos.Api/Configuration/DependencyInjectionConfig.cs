@@ -37,7 +37,8 @@ public static class DependencyInjectionConfig
         });
 
         services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"))
-            .AddHostedService<PedidoOrquestradorIntegrationHandler>();
+            .AddHostedService<PedidoOrquestradorIntegrationHandler>()
+            .AddHostedService<PedidoIntegrationHandler>();
 
         services.AddHttpContextAccessor();
         services.AddScoped<IAspNetUser, AspNetUser>();
