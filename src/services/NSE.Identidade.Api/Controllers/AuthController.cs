@@ -83,6 +83,7 @@ public class AuthController(
             return CustomResponse(clienteResult.ValidationResult);
         }
             
+        await userManager.AddClaimAsync(user, new Claim(nameof(Acesso.Catalogo), nameof(Permissao.Ler)));
         await signInManager.SignInAsync(user, false);
         return CustomResponse(await GerarJwt(user.Email));
     }
