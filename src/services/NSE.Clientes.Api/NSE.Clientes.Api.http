@@ -1,6 +1,0 @@
-@NSE.Clientes.Api_HostAddress = http://localhost:5172
-
-GET {{NSE.Clientes.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
