@@ -52,6 +52,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Pedidos.Infra", "src\se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Pagamentos.NerdsPag", "src\services\NSE.Pagamento.NerdsPag\NSE.Pagamentos.NerdsPag\NSE.Pagamentos.NerdsPag.csproj", "{B5C4E84D-36F4-4BDD-8F2A-A32357254C02}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{9D9AA644-0EF3-4416-8BFB-2B74A64D906E}"
+	ProjectSection(SolutionItems) = preProject
+		docker\nerdstore_producao.yml = docker\nerdstore_producao.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

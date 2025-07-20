@@ -18,15 +18,9 @@ namespace NSE.Pedidos.Api.Configuration;
 
 public static class DependencyInjectionConfig
 {
-    public static void RegisterServices(this IServiceCollection services, ConfigurationManager configuration, 
-        IWebHostEnvironment environment)
+    public static void RegisterServices(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddMediatR(typeof(Program));
-        
-        configuration
-            .SetBasePath(environment.ContentRootPath)
-            .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true, true)
-            .AddEnvironmentVariables();
         
         services.AddDbContext<PedidosContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
