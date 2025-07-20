@@ -5,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Configuration.AddEnviromentConfiguration(builder.Environment);
 builder.Services.AddIdentityConfiguration(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration();
 builder.Services.AddServicesConfiguration();
@@ -20,10 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

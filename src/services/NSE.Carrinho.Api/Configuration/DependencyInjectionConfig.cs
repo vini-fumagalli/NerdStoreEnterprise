@@ -9,8 +9,7 @@ namespace NSE.Carrinho.Api.Configuration;
 
 public static class DependencyInjectionConfig
 {
-    public static void RegisterServices(this IServiceCollection serviceCollection, 
-        ConfigurationManager configuration, IWebHostEnvironment environment)
+    public static void RegisterServices(this IServiceCollection serviceCollection, ConfigurationManager configuration)
     {
         serviceCollection.AddHttpContextAccessor();
         serviceCollection.AddScoped<IAspNetUser, AspNetUser>();
@@ -24,10 +23,6 @@ public static class DependencyInjectionConfig
         });
         
         serviceCollection.AddMessageBusConfiguration(configuration);
-        
-        configuration
-            .AddJsonFile($"appsettings.{environment.EnvironmentName.ToLower()}.json", true, true)
-            .AddEnvironmentVariables();
     }
 
     public static void UseCorsConfiguration(this IApplicationBuilder app)

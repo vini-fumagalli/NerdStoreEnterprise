@@ -18,6 +18,8 @@ public static class DependencyInjectionConfig
         serviceCollection.AddHttpClient<ICarrinhoService, CarrinhoService>().AddMessageAndPolicyHandler();
         
         serviceCollection.AddScoped<IAspNetUser, AspNetUser>();
+
+        serviceCollection.AddOptions();
         serviceCollection.Configure<AppServicesSettings>(configuration);
         
         serviceCollection.AddCors(options =>

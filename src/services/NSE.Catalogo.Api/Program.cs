@@ -3,11 +3,9 @@ using NSE.WebApi.Core.Identidade;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Configuration.AddEnviromentConfiguration(builder.Environment);
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration();
 builder.Services.AddCorsConfiguration();
@@ -22,12 +20,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCorsConfiguration();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.RegisterServices(builder.Configuration, builder.Environment);
+builder.Services.RegisterServices(builder.Configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
