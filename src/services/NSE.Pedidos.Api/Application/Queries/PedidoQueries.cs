@@ -8,7 +8,7 @@ public class PedidoQueries(IPedidoRepository repository) : IPedidoQueries
     public async Task<PedidoDTO> ObterUltimoPedido(int clienteId)
     {
         var pedido = await repository.ObterUltimoPedido(clienteId);
-        return PedidoDTO.ParaPedidoDTO(pedido);
+        return pedido != null ? PedidoDTO.ParaPedidoDTO(pedido) : null;
     }
 
     public async Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId(int clienteId)
@@ -20,6 +20,6 @@ public class PedidoQueries(IPedidoRepository repository) : IPedidoQueries
     public async Task<PedidoDTO> ObterPedidosAutorizados()
     {
         var pedidos = await repository.ObterPedidosAutorizados();
-        return PedidoDTO.ParaPedidoDTO(pedidos);
+        return pedidos != null ? PedidoDTO.ParaPedidoDTO(pedidos) : null;
     }
 }
