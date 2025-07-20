@@ -57,6 +57,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Pedidos.Domain", "src\s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Pedidos.Infra", "src\services\NSE.Pedidos.Infra\NSE.Pedidos.Infra.csproj", "{F0149D3D-EB11-4B52-A289-CB91E53F918F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{CA145F01-431F-47F9-8CB7-47A63F1DD81D}"
+	ProjectSection(SolutionItems) = preProject
+		sql\Dockerfile = sql\Dockerfile
+		sql\criacao-banco-docker.sql = sql\criacao-banco-docker.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
