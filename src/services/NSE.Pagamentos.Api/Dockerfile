@@ -10,7 +10,6 @@ COPY ["./services/NSE.Pagamentos.Api/NSE.Pagamentos.Api.csproj", "services/NSE.P
 COPY ["./building blocks/NSE.Core/NSE.Core.csproj", "building blocks/NSE.Core/"]
 COPY ["./building blocks/NSE.MessageBus/NSE.MessageBus.csproj", "building blocks/NSE.MessageBus/"]
 COPY ["./building blocks/NSE.WebApi.Core/NSE.WebApi.Core.csproj", "building blocks/NSE.WebApi.Core/"]
-COPY ["./services/NSE.Pagamento.NerdsPag/NSE.Pagamentos.NerdsPag.csproj", "services/NSE.Pagamentos.NerdsPag/"]
 
 RUN dotnet restore "services/NSE.Pagamentos.Api/NSE.Pagamentos.Api.csproj"
 COPY . .

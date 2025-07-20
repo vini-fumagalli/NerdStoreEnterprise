@@ -10,8 +10,6 @@ COPY ["./services/NSE.Pedidos.Api/NSE.Pedidos.Api.csproj", "services/NSE.Pedidos
 COPY ["./building blocks/NSE.Core/NSE.Core.csproj", "building blocks/NSE.Core/"]
 COPY ["./building blocks/NSE.MessageBus/NSE.MessageBus.csproj", "building blocks/NSE.MessageBus/"]
 COPY ["./building blocks/NSE.WebApi.Core/NSE.WebApi.Core.csproj", "building blocks/NSE.WebApi.Core/"]
-COPY ["./services/NSE.Pedidos.Domain/NSE.Pedidos.Domain.csproj", "services/NSE.Pedidos.Domain/"]
-COPY ["./services/NSE.Pedidos.Infra/NSE.Pedidos.Infra.csproj", "services/NSE.Pedidos.Infra/"]
 
 RUN dotnet restore "services/NSE.Pedidos.Api/NSE.Pedidos.Api.csproj"
 COPY . .
