@@ -1,8 +1,7 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.JwtExtensions;
 
 namespace NSE.WebApi.Core.Identidade;
 
@@ -14,26 +13,16 @@ public static class JwtConfiguration
         service.Configure<AppSettings>(appSettingsSection);
 
         var appSettings = appSettingsSection.Get<AppSettings>();
-        var key = Encoding.ASCII.GetBytes(appSettings.Segredo);
 
-        service.AddAuthentication(options =>
+        service.AddAuthentication(x =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(bearerOptions =>
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x =>
         {
-            bearerOptions.RequireHttpsMetadata = false;
-            bearerOptions.SaveToken = true;
-            bearerOptions.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ClockSkew = TimeSpan.Zero,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = appSettings.ValidoEm,
-                ValidIssuer = appSettings.Emissor
-            };
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.SetJwksOptions(new JwkOptions(appSettings.AutenticacaoJwksUrl));
         });
     }
 }

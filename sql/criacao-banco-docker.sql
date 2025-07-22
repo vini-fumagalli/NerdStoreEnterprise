@@ -258,6 +258,21 @@ create table dbo.RefreshTokens
 )
     go
 
+create table dbo.SecurityKeys
+(
+    Id            uniqueidentifier not null
+        constraint PK_SecurityKeys
+            primary key,
+    KeyId         nvarchar(max),
+    Type          nvarchar(max),
+    Parameters    nvarchar(max),
+    IsRevoked     bit              not null,
+    RevokedReason nvarchar(max),
+    CreationDate  datetime2        not null,
+    ExpiredAt     datetime2
+)
+    go
+
 create table dbo.Vouchers
 (
     Id             int identity

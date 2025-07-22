@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NSE.Identidade.Api.Data;
 using NSE.Identidade.Api.Extensions;
-using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Identidade.Api.Configuration;
 
@@ -10,6 +9,10 @@ public static class IdentityConfig
 {
     public static void AddIdentityConfiguration(this IServiceCollection service, IConfiguration configuration)
     {
+        service.AddJwksManager()
+            .PersistKeysToDatabaseStore<ApplicationDbContext>()
+            .UseJwtValidation();
+        
         service.AddDbContext<IdentidadeDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         
@@ -21,7 +24,5 @@ public static class IdentityConfig
             .AddErrorDescriber<IdentityMensagensPortugues>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-        
-        service.AddJwtConfiguration(configuration);
     }
 }

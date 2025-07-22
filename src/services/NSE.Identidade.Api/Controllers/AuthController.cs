@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.Jwt.Core.Interfaces;
 using NSE.Core.Messages.Integration;
 using NSE.Identidade.Api.Data.Interfaces;
 using NSE.Identidade.Api.Models;
+using NSE.Identidade.Api.Utils;
 using NSE.MessageBus;
 using NSE.WebApi.Core.Controller;
 using NSE.WebApi.Core.Identidade;
+using NSE.WebApi.Core.Usuario;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace NSE.Identidade.Api.Controllers;
@@ -19,14 +22,15 @@ namespace NSE.Identidade.Api.Controllers;
 [Route("api/identidade")]
 public class AuthController(
     SignInManager<IdentityUser<int>> signInManager,
-    UserManager<IdentityUser<int>> userManager, 
-    IOptions<AppSettings> appSettings, 
+    UserManager<IdentityUser<int>> userManager,
     ICodAutRepository codAutRepository,
     IRefreshTokensRepository refreshTokensRepository,
-    IMessageBus bus) : MainController
+    IMessageBus bus,
+    IJwtService jwtService,
+    IOptions<TokenSettings> tokenSettings
+    ) : MainController
 {
-
-    private readonly AppSettings _appSettings = appSettings.Value;
+    private readonly TokenSettings _tokenSettings = tokenSettings.Value;
     
     [HttpPost("nova-conta")]
     public async Task<ActionResult> Registrar([FromBody] UsuarioRegistro usuario)
@@ -112,17 +116,17 @@ public class AuthController(
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
         
-        var principal = ObterClaimsTokenExpirado(tokenEntry.Token);
+        var principal = await ObterClaimsTokenExpirado(tokenEntry.Token);
         if (principal is null)
         {
-            AdicionarErroProcessamento("Token/refresh token inválido");
+            AdicionarErroProcessamento("Token ou refresh token inválido");
             return CustomResponse();
         }
         
-        var usuarioId = principal.Claims.First(c => c.Type.EndsWith("nameidentifier")).Value;
+        var usuarioId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!await refreshTokensRepository.Validar(int.Parse(usuarioId), tokenEntry.RefreshToken))
         {
-            AdicionarErroProcessamento("Token/refresh token inválido");
+            AdicionarErroProcessamento("Token ou refresh token inválido");
             return CustomResponse();
         }
 
@@ -135,41 +139,41 @@ public class AuthController(
         var usuario = await userManager.FindByEmailAsync(email);
         var claims = await userManager.GetClaimsAsync(usuario);
         AdicionarClaims(usuario, claims);
-        var token = ObterToken(new ClaimsIdentity(claims));
+        var token = await ObterToken(new ClaimsIdentity(claims));
 
         return new UsuarioRespostaLogin
         {
             Token = token,
             Email = usuario.Email,
-            ExpiraEm = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+            ExpiraEm = TimeSpan.FromHours(1).TotalSeconds,
             RefreshToken = await GerarRefreshToken(usuario.Id)
         };
     }
     
-    private ClaimsPrincipal? ObterClaimsTokenExpirado(string? token)
+    private async Task<ClaimsPrincipal?> ObterClaimsTokenExpirado(string? token)
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Segredo)),
+            IssuerSigningKey = await jwtService.GetCurrentSecurityKey(),
             ValidateLifetime = false
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters,
-            out SecurityToken securityToken);
 
-        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
-            !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCultureIgnoreCase))
+        ClaimsPrincipal principal;
+        try
         {
-            throw new SecurityTokenException("Token inválido");
+            principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+        }   
+        catch 
+        {
+            return null;
         }
-
-        return principal;
+        
+        return principal.Identity.IsAuthenticated ? principal : null;
     }
 
     private async Task<string> GerarRefreshToken(int usuarioId)
@@ -182,24 +186,21 @@ public class AuthController(
         return refreshToken;
     }
 
-    private string ObterToken(ClaimsIdentity claimsIdentity)
+    private async Task<string> ObterToken(ClaimsIdentity claimsIdentity)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.Segredo);
         var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
         {
-            Issuer = _appSettings.Emissor,
-            Audience = _appSettings.ValidoEm,
+            Issuer = _tokenSettings.Emissor,
             Subject = claimsIdentity,
-            Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = await jwtService.GetCurrentSigningCredentials()
         });
 
         return tokenHandler.WriteToken(token);
     }
 
-    private void AdicionarClaims(IdentityUser<int> usuario, IList<Claim> claims)
+    private static void AdicionarClaims(IdentityUser<int> usuario, IList<Claim> claims)
     {
         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()));
         claims.Add(new Claim(JwtRegisteredClaimNames.Email, usuario.Email));

@@ -7,7 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddIdentityConfiguration(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration();
-builder.Services.AddServicesConfiguration();
+builder.Services.AddServicesConfiguration(builder.Configuration);
 builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
 var app = builder.Build();
@@ -22,4 +22,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseJwksDiscovery();
 app.Run();
