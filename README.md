@@ -20,3 +20,8 @@ Vá até o diretório do docker-compose
   docker-compose -f nerdstore_producao.yml up
 ```
 
+Suba o compose
+
+```bash
+  docker-compose -f nerdstore_producao.yml up
+```
