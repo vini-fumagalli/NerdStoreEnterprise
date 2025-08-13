@@ -17,7 +17,7 @@ Clone o projeto
 Vá até o diretório do docker-compose
 
 ```bash
-  docker-compose -f nerdstore_producao.yml up
+  cd docker
 ```
 
 Suba o compose
