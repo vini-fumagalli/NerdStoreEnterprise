@@ -1,6 +1,7 @@
 use master
 go
 
+    
 create database NerdStoreEnterpriseDB
 go
 
@@ -349,6 +350,8 @@ create table dbo.__EFMigrationsHistory
 )
     go
 
+IF NOT EXISTS (SELECT 1 FROM dbo.Produtos)
+BEGIN
 INSERT INTO dbo.Produtos (Nome, Descricao, Ativo, Valor, DataCadastro, Imagem, QuantidadeEstoque) VALUES
 ('Camiseta 4 Head', 'Camiseta 100% algodão, resistente a lavagens e altas temperaturas.', 1, 50.00, '2019-07-19T00:00:00', '4head.webp', 5),
 ('Camiseta 4 Head Branca', 'Camiseta 100% algodão, resistente a lavagens e altas temperaturas.', 1, 50.00, '2019-07-19T00:00:00', 'Branca 4head.webp', 5),
@@ -389,4 +392,4 @@ INSERT INTO dbo.Produtos (Nome, Descricao, Ativo, Valor, DataCadastro, Imagem, Q
 ('Caneca Programmer Code', 'Caneca de porcelana com impressão térmica de alta resistência.', 1, 15.00, '2019-07-19T00:00:00', 'caneca2.jpg', 10),
 ('Camiseta Software Developer', 'Camiseta 100% algodão, resistente a lavagens e altas temperaturas.', 1, 100.00, '2019-07-19T00:00:00', 'camiseta1.jpg', 10),
 ('Caneca Turn Coffee in Code', 'Caneca de porcelana com impressão térmica de alta resistência.', 1, 20.00, '2019-07-19T00:00:00', 'caneca3.jpg', 10)
-;
+END
