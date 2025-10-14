@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --controller deployment -f nerdstore_producao.yml -o k8s/
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: api-pagamento
+  name: api-pagamento
+spec:
+  ports:
+    - name: "5601"
+      port: 5601
+      targetPort: 5601
+  selector:
+    io.kompose.service: api-pagamento

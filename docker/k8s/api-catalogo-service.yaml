@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --controller deployment -f nerdstore_producao.yml -o k8s/
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: api-catalogo
+  name: api-catalogo
+spec:
+  ports:
+    - name: "5301"
+      port: 5301
+      targetPort: 5301
+  selector:
+    io.kompose.service: api-catalogo

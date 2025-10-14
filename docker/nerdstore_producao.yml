@@ -21,6 +21,8 @@ services:
     environment:
       SA_PASSWORD: "MeuDB@123"
       ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
     
   api-identidade:
     image: tcc/nerdstore-api-identidade:latest

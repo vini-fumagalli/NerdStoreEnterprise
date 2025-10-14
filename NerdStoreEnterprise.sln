@@ -63,6 +63,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{CA145F01-431
 		sql\criacao-banco-docker.sql = sql\criacao-banco-docker.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{EEA5AB9A-DB05-4895-9100-F0B462F67B52}"
+	ProjectSection(SolutionItems) = preProject
+		docker\k8s\api-catalogo-deployment.yaml = docker\k8s\api-catalogo-deployment.yaml
+		docker\k8s\api-bff-compras-deployment.yaml = docker\k8s\api-bff-compras-deployment.yaml
+		docker\k8s\api-bff-compras-service.yaml = docker\k8s\api-bff-compras-service.yaml
+		docker\k8s\api-carrinho-deployment.yaml = docker\k8s\api-carrinho-deployment.yaml
+		docker\k8s\sql-server-service.yaml = docker\k8s\sql-server-service.yaml
+		docker\k8s\sql-server-deployment.yaml = docker\k8s\sql-server-deployment.yaml
+		docker\k8s\rabbitmq-deployment.yaml = docker\k8s\rabbitmq-deployment.yaml
+		docker\k8s\rabbitmq-service.yaml = docker\k8s\rabbitmq-service.yaml
+		docker\k8s\api-catalogo-service.yaml = docker\k8s\api-catalogo-service.yaml
+		docker\k8s\api-cliente-deployment.yaml = docker\k8s\api-cliente-deployment.yaml
+		docker\k8s\api-cliente-service.yaml = docker\k8s\api-cliente-service.yaml
+		docker\k8s\api-identidade-deployment.yaml = docker\k8s\api-identidade-deployment.yaml
+		docker\k8s\api-identidade-service.yaml = docker\k8s\api-identidade-service.yaml
+		docker\k8s\api-pagamento-service.yaml = docker\k8s\api-pagamento-service.yaml
+		docker\k8s\api-pagamento-deployment.yaml = docker\k8s\api-pagamento-deployment.yaml
+		docker\k8s\api-pedido-deployment.yaml = docker\k8s\api-pedido-deployment.yaml
+		docker\k8s\api-pedido-service.yaml = docker\k8s\api-pedido-service.yaml
+		docker\k8s\api-carrinho-service.yaml = docker\k8s\api-carrinho-service.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +116,7 @@ Global
 		{26A4DB48-CC07-4321-A6A1-978A9E287758} = {4ECAB31F-8A64-430A-9FE5-23A1D87C4462}
 		{24159C62-68FA-4EFD-B222-19341AF16890} = {4034E582-03A9-4D2F-968E-A9E82B16D9E0}
 		{F0149D3D-EB11-4B52-A289-CB91E53F918F} = {4034E582-03A9-4D2F-968E-A9E82B16D9E0}
+		{EEA5AB9A-DB05-4895-9100-F0B462F67B52} = {9D9AA644-0EF3-4416-8BFB-2B74A64D906E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3BA347E2-754E-42BD-BA4A-E2D2D0280C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
